@@ -33,7 +33,7 @@ async def on_ready():
 @client.event
 async def on_message(message):
 
-    if message.author == client.user or message.channel.id != 1161741893357555744:
+    if message.author == client.user :
      return 
 
     for cmd in lista_comandos:
