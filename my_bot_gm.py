@@ -21,37 +21,50 @@ client = discord.Client(intents=intents)
 
 @client.event 
 async def on_ready():
-    print (f'estou pronto!zm meu ID é {client.user.id}')
+    print (f'estou pronto!zm ts meu ID é {client.user.id}')
     
 @client.event
 async def on_message(message):
+    
 
-    if message.author == client.user :
+    if message.author == client.user or message.author.bot:
      return 
     
-    lista_stk = await message.guild.fetch_stickers()
-    random_sticker = random.choice(lista_stk)
+    replied = False 
+    
+    sticker_list = await message.guild.fetch_stickers()
+    random_sticker = random.choice(sticker_list)  
 
     for cmd in lista_comandos:
-     if unidecode(cmd.lower().replace(" ", "")) in unidecode(message.content.lower().replace(" ", "")):
-        await message.add_reaction ('☀️') 
-        await message.add_reaction("<:zcash:1060629265961472080>")
-        resposta = random.choice(lista_respostas)
-        await message.reply(content=resposta,stickers=[random_sticker])
-        break
-     
+        if unidecode(cmd.lower().replace(" ", "")) in unidecode(message.content.lower().replace(" ", "")):
+            await message.add_reaction ('☀️') 
+            await message.add_reaction("<:zcash:1060629265961472080>")
+            resposta = random.choice(lista_respostas)
+            await message.reply(content=resposta,stickers=[random_sticker])
+            replied = True
+
+            break
+
+
     for cmdn in lista_comandos_n:
-        if unidecode(message.content).replace(" ", "").lower().startswith(unidecode(cmdn).replace(" ", "").lower()):
+
+        if replied :
+            break 
+
+        if unidecode(cmdn.lower().replace(" ", "")) in unidecode(message.content.lower().replace(" ", "")):
             await message.add_reaction ('🌘') 
             await message.add_reaction("<:zcash:1060629265961472080>")
             resposta = random.choice(lista_respostas_n)
             await message.reply(content=resposta,stickers=[random_sticker])
             break
-        
-    if unidecode(message.content).replace(" ", "").lower().startswith("zm"):
-      await message.add_reaction ('☕')
 
-    if unidecode(message.content).replace(" ", "").lower().startswith("zn"):
-      await message.add_reaction ('🍵')
+    if "zm" in unidecode(message.content).replace(" ", "").lower():
+        await message.add_reaction ('☕') 
+            
+    elif "zn" in unidecode(message.content).replace(" ", "").lower():
+        await message.add_reaction ('🍵') 
+  
+        
+
 
 client.run(my_token)       
