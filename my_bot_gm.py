@@ -37,8 +37,7 @@ async def on_message(message):
 
     for cmd in lista_comandos:
         if unidecode(cmd.lower().replace(" ", "")) in unidecode(message.content.lower().replace(" ", "")):
-            await message.add_reaction ('☀️') 
-            await message.add_reaction("<:zcash:1060629265961472080>")
+            await message.add_reaction ('<:SunIcon:1189330981866451035>') 
             resposta = random.choice(lista_respostas)
             await message.reply(content=resposta,stickers=[random_sticker])
             replied = True
@@ -52,17 +51,16 @@ async def on_message(message):
             break 
 
         if unidecode(cmdn.lower().replace(" ", "")) in unidecode(message.content.lower().replace(" ", "")):
-            await message.add_reaction ('🌘') 
-            await message.add_reaction("<:zcash:1060629265961472080>")
+            await message.add_reaction ('<:MoonIcon:1189330979156930702>') 
             resposta = random.choice(lista_respostas_n)
             await message.reply(content=resposta,stickers=[random_sticker])
             break
 
     if "zm" in unidecode(message.content).replace(" ", "").lower():
-        await message.add_reaction ('☕') 
+        await message.add_reaction ('<:Coffee01:1189301205021769758>') 
             
     elif "zn" in unidecode(message.content).replace(" ", "").lower():
-        await message.add_reaction ('🍵') 
+        await message.add_reaction ('<:Tea01:1189331115106902027>') 
   
         
 
