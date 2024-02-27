@@ -21,7 +21,7 @@ client = discord.Client(intents=intents)
 
 @client.event 
 async def on_ready():
-    print (f'estou pronto!zm ts meu ID é {client.user.id}')
+    print (f'estou pronto!zm meu ID é {client.user.id}')
     
 @client.event
 async def on_message(message):
@@ -31,13 +31,20 @@ async def on_message(message):
      return 
     
     replied = False 
+
+    sol_sticker_id = 1189750838722301952
+    lua_sticker_id = 1189751207661682758
     
     sticker_list = await message.guild.fetch_stickers()
     random_sticker = random.choice(sticker_list)  
 
     for cmd in lista_comandos:
         if unidecode(cmd.lower().replace(" ", "")) in unidecode(message.content.lower().replace(" ", "")):
-            await message.add_reaction ('<:SunIcon:1189330981866451035>') 
+
+            while random_sticker.id == lua_sticker_id:
+             random_sticker = random.choice(sticker_list) 
+        
+            await message.add_reaction ('<:zsun:1187501073280286830>') 
             resposta = random.choice(lista_respostas)
             await message.reply(content=resposta,stickers=[random_sticker])
             replied = True
@@ -51,16 +58,20 @@ async def on_message(message):
             break 
 
         if unidecode(cmdn.lower().replace(" ", "")) in unidecode(message.content.lower().replace(" ", "")):
-            await message.add_reaction ('<:MoonIcon:1189330979156930702>') 
+
+            while random_sticker.id == sol_sticker_id:
+             random_sticker = random.choice(sticker_list) 
+        
+            await message.add_reaction ('<:zmoon:1187501071275413524>') 
             resposta = random.choice(lista_respostas_n)
             await message.reply(content=resposta,stickers=[random_sticker])
             break
 
     if "zm" in unidecode(message.content).replace(" ", "").lower():
-        await message.add_reaction ('<:Coffee01:1189301205021769758>') 
+        await message.add_reaction ('<:zcoffe:1187501066569400391>') 
             
     elif "zn" in unidecode(message.content).replace(" ", "").lower():
-        await message.add_reaction ('<:Tea01:1189331115106902027>') 
+        await message.add_reaction ('<:teacup:1188242966792376381>') 
   
         
 
