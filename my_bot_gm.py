@@ -31,6 +31,11 @@ async def on_message(message):
      return 
     
     replied = False 
+    awarded = False
+
+    chance = random.uniform(0,1)
+    if (chance <  0.003):
+     awarded = True
 
     sol_sticker_id = 1189750838722301952
     lua_sticker_id = 1189751207661682758
@@ -40,16 +45,19 @@ async def on_message(message):
 
     for cmd in lista_comandos:
         if unidecode(cmd.lower().replace(" ", "")) in unidecode(message.content.lower().replace(" ", "")):
-
-            while random_sticker.id == lua_sticker_id:
+         replied = True
+         if awarded:
+            await message.reply(content="Congrats, you won a prize!", file=discord.File('./imagem/Golden_Ticket.png')) 
+            return
+        
+         while random_sticker.id == lua_sticker_id:
              random_sticker = random.choice(sticker_list) 
         
-            await message.add_reaction ('<:zsun:1187501073280286830>') 
-            resposta = random.choice(lista_respostas)
-            await message.reply(content=resposta,stickers=[random_sticker])
-            replied = True
+         await message.add_reaction ('<:zsun:1187501073280286830>') 
+         resposta = random.choice(lista_respostas)
+         await message.reply(content=resposta,stickers=[random_sticker])
 
-            break
+         break
 
 
     for cmdn in lista_comandos_n:
@@ -58,7 +66,10 @@ async def on_message(message):
             break 
 
         if unidecode(cmdn.lower().replace(" ", "")) in unidecode(message.content.lower().replace(" ", "")):
-
+            if awarded:
+             await message.reply(content="Congrats, you won a prize!", file=discord.File('./imagem/Golden_Ticket.png')) 
+             return
+            
             while random_sticker.id == sol_sticker_id:
              random_sticker = random.choice(sticker_list) 
         
