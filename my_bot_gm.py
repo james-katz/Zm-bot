@@ -40,6 +40,8 @@ async def on_message(message):
     sol_sticker_id = 1189750838722301952
     lua_sticker_id = 1189751207661682758
     portuguese_role = message.guild.get_role(979779292026261554)
+    zcash_role = message.guild.get_role(1078741799306268727)
+    dev_id = 1095310806385700905
     
     sticker_list = await message.guild.fetch_stickers()
     random_sticker = random.choice(sticker_list)  
@@ -47,7 +49,7 @@ async def on_message(message):
     for cmd in lista_comandos:
         if unidecode(cmd.lower().replace(" ", "")) in unidecode(message.content.lower().replace(" ", "")):
          replied = True
-         if awarded and portuguese_role in message.author.roles:
+         if awarded and portuguese_role in message.author.roles and zcash_role not in message.author.roles and message.author.id is not dev_id:
           await message.reply(content="Parabéns, você ganhou um prêmio!", file=discord.File('./imagem/Golden_Ticket.png'))                
           return
         
@@ -67,7 +69,7 @@ async def on_message(message):
             break 
 
         if unidecode(cmdn.lower().replace(" ", "")) in unidecode(message.content.lower().replace(" ", "")):
-            if awarded and portuguese_role in message.author.roles:
+            if awarded and portuguese_role in message.author.roles and zcash_role not in message.author.roles and message.author.id is not dev_id:
              await message.reply(content="Parabéns, você ganhou um prêmio!", file=discord.File('./imagem/Golden_Ticket.png'))                
              return
             
