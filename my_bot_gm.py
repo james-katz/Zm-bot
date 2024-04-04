@@ -34,7 +34,7 @@ async def on_message(message):
     awarded = False
 
     chance = random.uniform(0,1)
-    if (chance <  0.003):
+    if (chance <  0.0042):
      awarded = True
 
     sol_sticker_id = 1189750838722301952
