@@ -15,6 +15,8 @@ lista_respostas = ["Zm Zcasher","Zm zfriend","gm Zfriend", "gm Zcasher"]
 
 lista_respostas_n = ["Zn Zcasher","Zn zfriend","gn Zfriend", "gn Zcasher"]
 
+contador = 0
+
 intents = discord.Intents.default()
 intents.message_content = True
 client = discord.Client(intents=intents)
@@ -25,17 +27,16 @@ async def on_ready():
     
 @client.event
 async def on_message(message):
-    
-
     if message.author == client.user or message.author.bot:
-     return 
+        return 
     
     replied = False 
     awarded = False
 
-    chance = random.uniform(0,1)
-    if (chance <  0.0042):
-     awarded = True
+    global contador
+    target = random.randint(200, 300)
+    if(contador >= target):
+        awarded = True
 
     sol_sticker_id = 1189750838722301952
     lua_sticker_id = 1189751207661682758
@@ -48,34 +49,37 @@ async def on_message(message):
 
     for cmd in lista_comandos:
         if unidecode(cmd.lower().replace(" ", "")) in unidecode(message.content.lower().replace(" ", "")):
-         replied = True
-         if awarded and portuguese_role in message.author.roles and zcash_role not in message.author.roles and message.author.id is not dev_id:
-          await message.reply(content="Parabéns, você ganhou um prêmio!", file=discord.File('./imagem/Golden_Ticket.png'))                
-          return
+            replied = True
+            if awarded and portuguese_role in message.author.roles and zcash_role not in message.author.roles and message.author.id != dev_id:
+                await message.reply(content="Parabéns, você ganhou um prêmio!", file=discord.File('./imagem/Golden_Ticket.png'))                
+                contador = 0                
+                return
+            else:
+                contador = contador + 1
         
-         while random_sticker.id == lua_sticker_id:
-             random_sticker = random.choice(sticker_list) 
+            while random_sticker.id == lua_sticker_id:
+                random_sticker = random.choice(sticker_list) 
         
-         await message.add_reaction ('<:zsun:1187501073280286830>') 
-         resposta = random.choice(lista_respostas)
-         await message.reply(content=resposta,stickers=[random_sticker])
-
-         break
-
+            await message.add_reaction ('<:zsun:1187501073280286830>') 
+            resposta = random.choice(lista_respostas)
+            await message.reply(content=resposta,stickers=[random_sticker])
+            break
 
     for cmdn in lista_comandos_n:
-
         if replied :
             break 
 
         if unidecode(cmdn.lower().replace(" ", "")) in unidecode(message.content.lower().replace(" ", "")):
-            if awarded and portuguese_role in message.author.roles and zcash_role not in message.author.roles and message.author.id is not dev_id:
-             await message.reply(content="Parabéns, você ganhou um prêmio!", file=discord.File('./imagem/Golden_Ticket.png'))                
-             return
+            if awarded and portuguese_role in message.author.roles and zcash_role not in message.author.roles and message.author.id != dev_id: 
+                await message.reply(content="Parabéns, você ganhou um prêmio!", file=discord.File('./imagem/Golden_Ticket.png'))                
+                contador = 0                
+                return
+            else:
+                contador = contador + 1
             
             while random_sticker.id == sol_sticker_id:
-             random_sticker = random.choice(sticker_list) 
-        
+                random_sticker = random.choice(sticker_list)            
+           
             await message.add_reaction ('<:zmoon:1187501071275413524>') 
             resposta = random.choice(lista_respostas_n)
             await message.reply(content=resposta,stickers=[random_sticker])
@@ -87,7 +91,4 @@ async def on_message(message):
     elif "zn" in unidecode(message.content).replace(" ", "").lower():
         await message.add_reaction ('<:teacup:1188242966792376381>') 
   
-        
-
-
-client.run(my_token)       
+client.run(my_token)
