@@ -34,15 +34,26 @@ async def on_message(message):
     awarded = False
 
     global contador
-    target = random.randint(200, 300)
+    target = random.randint(20,50)
     if(contador >= target):
+        print("ganhou!!!!")
         awarded = True
 
-    sol_sticker_id = 1189750838722301952
-    lua_sticker_id = 1189751207661682758
+
+    print(f"Contador: {contador} | Target: {target}")
+    
+    
+    
+
+    sticker_d = [1189330981866451035, 213028820320522280]
+    sticker_n = [1189330979156930702, 1187411015642648737, 1187415785761669120, 212889809283194900, 216084240051994674, 1189751078292553748]
+    
+    
+
     portuguese_role = message.guild.get_role(979779292026261554)
     zcash_role = message.guild.get_role(1078741799306268727)
     dev_id = 1095310806385700905
+    
     
     sticker_list = await message.guild.fetch_stickers()
     random_sticker = random.choice(sticker_list)  
@@ -57,38 +68,50 @@ async def on_message(message):
             else:
                 contador = contador + 1
         
-            while random_sticker.id == lua_sticker_id:
+            while random_sticker.id in sticker_n:
                 random_sticker = random.choice(sticker_list) 
         
-            await message.add_reaction ('<:zsun:1187501073280286830>') 
-            resposta = random.choice(lista_respostas)
-            await message.reply(content=resposta,stickers=[random_sticker])
+            try:
+                await message.add_reaction ('<:SunIcon:1189330981866451035>') 
+                resposta = random.choice(lista_respostas)
+                await message.reply(content=resposta,stickers=[random_sticker])
+            except:
+                print ('erro ao tentar add reação')
+            
             break
 
     for cmdn in lista_comandos_n:
-        if replied :
+        if replied:
             break 
 
         if unidecode(cmdn.lower().replace(" ", "")) in unidecode(message.content.lower().replace(" ", "")):
             if awarded and portuguese_role in message.author.roles and zcash_role not in message.author.roles and message.author.id != dev_id: 
                 await message.reply(content="Parabéns, você ganhou um prêmio!", file=discord.File('./imagem/Golden_Ticket.png'))                
                 contador = 0                
-                return
+                return 
             else:
                 contador = contador + 1
             
-            while random_sticker.id == sol_sticker_id:
+            while random_sticker.id in sticker_d:
                 random_sticker = random.choice(sticker_list)            
            
-            await message.add_reaction ('<:zmoon:1187501071275413524>') 
-            resposta = random.choice(lista_respostas_n)
-            await message.reply(content=resposta,stickers=[random_sticker])
+            try:
+             await message.add_reaction ('<:MoonIcon:1189330979156930702>') 
+             resposta = random.choice(lista_respostas_n)
+             await message.reply(content=resposta,stickers=[random_sticker])
+            except:
+                print ('erro ao tentar add reação')
+        
             break
 
     if "zm" in unidecode(message.content).replace(" ", "").lower():
-        await message.add_reaction ('<:zcoffe:1187501066569400391>') 
-            
+        try :
+         await message.add_reaction ('<:Coffee01:1189301205021769758>') 
+        except :
+            print ('erro ao tentar add reação')    
     elif "zn" in unidecode(message.content).replace(" ", "").lower():
-        await message.add_reaction ('<:teacup:1188242966792376381>') 
-  
+        try :
+         await message.add_reaction ('<:Tea01:1189331115106902027>') 
+        except :
+            print ('erro ao tentar add reação')
 client.run(my_token)
