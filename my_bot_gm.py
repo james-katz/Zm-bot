@@ -34,7 +34,7 @@ async def on_message(message):
     awarded = False
 
     global contador
-    target = random.randint(20,50)
+    target = random.randint(150,200)
     if(contador >= target):
         print("ganhou!!!!")
         awarded = True
@@ -45,8 +45,8 @@ async def on_message(message):
     
     
 
-    sticker_d = [1189330981866451035, 213028820320522280]
-    sticker_n = [1189330979156930702, 1187411015642648737, 1187415785761669120, 212889809283194900, 216084240051994674, 1189751078292553748]
+    sticker_d = [1189750838722301952, 1213028820320522280]
+    sticker_n = [1187411015642648737, 1187415785761669120, 1189751078292553748, 1189751207661682758, 1212889809283194900]
     
     
 
