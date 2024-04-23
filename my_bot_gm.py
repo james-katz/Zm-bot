@@ -7,9 +7,9 @@ from unidecode import unidecode
 load_dotenv()
 my_token = os.getenv("DISCORD_TOKEN")
 
-lista_comandos = ["zm","gm","Good morning","Morning","Gmorning","bom dia ", "dia bom","dia","Buenos días","Feliz día","Buen día","Annyeonghaseyo","안녕하세요","Joh eun achim","좋은 아침","Annyeong hasimnikka","안녕하십니까","Dobroye utro","Доброе утро","Zdravstvuyte utrom","Здравствуйте утром","Dobroye utrechko","Утро доброе","Buongiorno","Buon mattino","Buona giornata","Bonjour","bonne journée","Salut","Ina kwana","Ẹ kú aro","Ọma ụtụtụ"]
+lista_comandos = ["zm","gm","Good morning","Morning","Gmorning","bom dia ", "dia bom","dia","Buenos días","Feliz día","Buen día","Annyeonghaseyo","안녕하세요","Joh eun achim","좋은 아침","Annyeong hasimnikka","안녕하십니까","Buongiorno","Buon mattino","Buona giornata"]
 
-lista_comandos_n = ["zn","gn","Good night","Nighty night","Boa noite","Boa noitinha","noite","Buenas noches","annyeonghi jumuseyo","안녕히 주무세요","gutbam","굿밤","Spokoynoy nochi","Спокойной ночи","Dobroy nochi","Доброй ночи","Buona notte","Bonne nuit","Douce nuit","Ina kwana","Ẹ ku alẹ","Ku ale","Ka chi fo"]
+lista_comandos_n = ["zn","gn","Good night","Nighty night","Boa noite","Boa noitinha","noite","Buenas noches","annyeonghi jumuseyo","안녕히 주무세요","gutbam","굿밤","Buona notte"]
 
 lista_respostas = ["Zm Zcasher","Zm zfriend","gm Zfriend", "gm Zcasher"]
 
@@ -27,14 +27,14 @@ async def on_ready():
     
 @client.event
 async def on_message(message):
-    if message.author == client.user or message.author.bot:
+    if message.author == client.user or message.author.bot or message.channel.id !=  1080161118384820358:
         return 
     
     replied = False 
     awarded = False
 
     global contador
-    target = random.randint(150,200)
+    target = random.randint(200,250)
     if(contador >= target):
         print("ganhou!!!!")
         awarded = True
