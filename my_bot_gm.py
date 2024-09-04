@@ -125,7 +125,7 @@ async def on_message(message):
     
     sticker_list = await message.guild.fetch_stickers()
     random_sticker = random.choice(sticker_list)
-    
+
     if message.author.id == 564292989984440350:
       random_ian = random.choice(stickers_ian)
       random_sticker = await message.guild.fetch_sticker(random_ian)
@@ -228,9 +228,9 @@ async def on_message(message):
             break
 
     # Deletar interações ID de permissao dev cassia 
-    if message.author.id == 1094939925721403443:
+    if message.author.id == 1095310806385700905 : 
         for palavra in PALAVRA_GATILHO_DELETAR:
-            if palavra in message.content.lower() and message.channel.id == 1173374501086572675:
+            if palavra in message.content.lower() and message.channel.id == 1094939925721403443:
                 deletar_todas_interacoes()
                 await message.channel.send("Todas as interações foram deletadas.")
                 break
