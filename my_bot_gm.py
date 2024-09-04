@@ -125,7 +125,10 @@ async def on_message(message):
     
     sticker_list = await message.guild.fetch_stickers()
     random_sticker = random.choice(sticker_list)
-
+    
+    if message.author.id == 564292989984440350:
+      random_ian = random.choice(stickers_ian)
+      random_sticker = await message.guild.fetch_sticker(random_ian)
 
     # Verifica se há um prêmio para enviar
     ultima_interacao = buscar_ultima_interacao()  
@@ -203,10 +206,6 @@ async def on_message(message):
                 print ('erro ao tentar add reação')
         
             break
-
-     if message.author.id == 564292989984440350:
-      random_ian = random.choice(stickers_ian)
-      random_sticker = await message.guild.fetch_sticker(random_ian)
 
      if "zm" in unidecode(message.content).replace(" ", "").lower():
         try :
