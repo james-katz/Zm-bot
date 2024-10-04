@@ -126,7 +126,7 @@ async def on_message(message):
             if unidecode(cmd.lower().replace(" ", "")) in unidecode(message.content.lower().replace(" ", "")):
                 replied = True
                 if awarded and portuguese_role in message.author.roles and zcash_role not in message.author.roles and message.author.id != dev_id:
-                     if ultima_interacao:
+                 if ultima_interacao:
                         diferenca = datetime.now() - ultima_interacao.data_interacao
                         if diferenca.days >= 15:
                             if ultima_interacao.user_id != message.author.id:
@@ -137,7 +137,7 @@ async def on_message(message):
                                 print("Usuário já ganhou o prêmio recentemente. Nenhum prêmio enviado.")
                         else:
                             print("Menos de 15 dias desde o último prêmio. Nenhum prêmio enviado.")    
-                else:  
+                 else:  
                     await message.reply(content="Parabéns, você ganhou um prêmio!", file=discord.File('./imagem/Golden_Ticket.png'))                
                     registrar_interacao(message.author.id)
                     contador = 0                
