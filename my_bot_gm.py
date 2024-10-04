@@ -37,12 +37,12 @@ def registrar_interacao(user_id):
         print(f"Erro ao registrar interação: {e}")
 
 # Função para buscar a interação mais recente no banco de dados
-def buscar_ultima_interacao():
+def buscar_ultima_interacao(user_id):
     try:
-        return Interacao.select().order_by(Interacao.data_interacao.desc()).get()
+        return Interacao.select().where(Interacao.user_id == user_id).order_by(Interacao.data_interacao.desc()).get()
     except Interacao.DoesNotExist:
         return None
-    
+
 # Função para gerar a tabela de interações
 def gerar_tabela_interacoes():
     interacoes = Interacao.select()
