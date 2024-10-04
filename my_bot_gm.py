@@ -119,7 +119,7 @@ async def on_message(message):
 
 
     # Verifica se há um prêmio para enviar
-    ultima_interacao = buscar_ultima_interacao() 
+    ultima_interacao = buscar_ultima_interacao(message.author.id) 
 
     if message.channel.id == 1080161118384820358:
      for cmd in lista_comandos:
