@@ -175,7 +175,7 @@ async def on_message(message):
                                 print("Usuário já ganhou o prêmio recentemente. Nenhum prêmio enviado.")
                         else:
                             print("Menos de 15 dias desde o último prêmio. Nenhum prêmio enviado.")
-                else:  
+                     else:  
                         await message.reply(content="Parabéns, você ganhou um prêmio!", file=discord.File('./imagem/Golden_Ticket.png'))                
                         registrar_interacao(message.author.id)
                         contador = 0                
