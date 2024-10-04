@@ -155,7 +155,7 @@ async def on_message(message):
             except Exception as e:
                     print('Erro ao tentar adicionar reação:', e)
                 
-            break
+                    break
 
      for cmdn in lista_comandos_n:
             if replied:
@@ -193,7 +193,7 @@ async def on_message(message):
                 except Exception as e:
                     print('Erro ao tentar adicionar reação:', e)
             
-                break
+                    break
 
      if "zm" in unidecode(message.content).replace(" ", "").lower():
             try:
@@ -204,7 +204,7 @@ async def on_message(message):
             try:
                 await message.add_reaction('<:Tea01:1189331115106902027>') 
             except Exception as e:
-                print('Erro ao tentar adicionar reação:', e) 
+                print('Erro ao tentar adicionar reação:', e)          
 
 
             
