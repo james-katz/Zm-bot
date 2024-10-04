@@ -19,6 +19,7 @@ class Interacao(Model):
     class Meta:
         database = db  
 db.create_tables([Interacao])
+
 # Função para registrar uma nova interação
 def registrar_interacao(user_id):
     try:
@@ -31,10 +32,12 @@ def registrar_interacao(user_id):
             print(f"Nova interação registrada: ID do usuário: {interacao.user_id}, Data: {interacao.data_interacao}")
     except Exception as e:
         print(f"Erro ao registrar interação: {e}")
+
 # Função para buscar a interação mais recente no banco de dados
-def buscar_ultima_interacao():
+   
+def buscar_ultima_interacao(user_id):
     try:
-        return Interacao.select().order_by(Interacao.data_interacao.desc()).get()
+        return Interacao.select().where(Interacao.user_id == user_id).order_by(Interacao.data_interacao.desc()).get()
     except Interacao.DoesNotExist:
         return None
     
@@ -88,6 +91,7 @@ async def on_message(message):
         return 
 
     replied = False 
+    awarded = False  
 
     global contador
     target = random.randint(200, 250)
@@ -97,7 +101,6 @@ async def on_message(message):
 
     print(f"Contador: {contador} | Target: {target}")
     
-    # Definindo stickers
     sticker_d = [1189750838722301952, 1213028820320522280]
     sticker_n = [1187411015642648737, 1187415785761669120, 1189751078292553748, 1189751207661682758, 1212889809283194900]
     stickers_ian = [1235994545448288336, 1260616198735925248]
@@ -214,6 +217,7 @@ async def on_message(message):
             else:
                 await message.channel.send("Nenhuma interação registrada até agora.")
             break
+
     # Deletar interações ID de permissao dev cassia 
     if message.author.id == 1094939925721403443:
         for palavra in PALAVRA_GATILHO_DELETAR:
