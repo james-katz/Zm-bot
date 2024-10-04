@@ -138,7 +138,7 @@ async def on_message(message):
       random_sticker = await message.guild.fetch_sticker(random_ian)
 
     # Verifica se há um prêmio para enviar
-    ultima_interacao = buscar_ultima_interacao()    
+    ultima_interacao = buscar_ultima_interacao(message.author.id)    
 
     if message.channel.id == 1080161118384820358:
      for cmd in lista_comandos:
@@ -149,8 +149,7 @@ async def on_message(message):
                         diferenca = datetime.now() - ultima_interacao.data_interacao
                         if diferenca.days >= 15:
                             if ultima_interacao.user_id != message.author.id:
-                                await message.reply(content="Parabéns, você ganhou um prêmio!", file=discord.File('./imagem/Golden_Ticket.png'))
-                                registrar_interacao(message.author.id)                
+                                await message.reply(content="Parabéns, você ganhou um prêmio!", file=discord.File('./imagem/Golden_Ticket.png'))                
                                 contador = 0                
                                 return
                             else:
@@ -159,7 +158,6 @@ async def on_message(message):
                             print("Menos de 15 dias desde o último prêmio. Nenhum prêmio enviado.")    
                 else:  
                     await message.reply(content="Parabéns, você ganhou um prêmio!", file=discord.File('./imagem/Golden_Ticket.png'))                
-                    registrar_interacao(message.author.id)
                     contador = 0                
                     return 
             else:
@@ -194,7 +192,6 @@ async def on_message(message):
                         if diferenca.days >= 15:
                             if ultima_interacao.user_id != message.author.id:
                                 await message.reply(content="Parabéns, você ganhou um prêmio!", file=discord.File('./imagem/Golden_Ticket.png'))
-                                registrar_interacao(message.author.id)
                                 contador = 0                
                                 return                
                             else:
@@ -203,7 +200,6 @@ async def on_message(message):
                             print("Menos de 15 dias desde o último prêmio. Nenhum prêmio enviado.")
                 else:  
                         await message.reply(content="Parabéns, você ganhou um prêmio!", file=discord.File('./imagem/Golden_Ticket.png'))                
-                        registrar_interacao(message.author.id)
                         contador = 0                
                         return  
             else:
