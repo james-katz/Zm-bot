@@ -1,17 +1,17 @@
 import discord
-import os
+import os 
 import random
 from dotenv import load_dotenv
 from unidecode import unidecode
 from peewee import *
-from datetime import datetime, timedelta
+from datetime import datetime
 from tabulate import tabulate
 
 load_dotenv()
 my_token = os.getenv("DISCORD_TOKEN")
 
 # Configuração do banco de dados
-db = SqliteDatabase("banco.sqlite3")
+db = SqliteDatabase ("banco.sqlite3")
 class Interacao(Model):
     id = AutoField() 
     user_id = IntegerField()  
@@ -30,16 +30,20 @@ def registrar_interacao(user_id):
             print(f"Interação atualizada: ID do usuário: {interacao.user_id}, Nova data: {interacao.data_interacao}")
         else:
             print(f"Nova interação registrada: ID do usuário: {interacao.user_id}, Data: {interacao.data_interacao}")
+        
+        return interacao
     except Exception as e:
         print(f"Erro ao registrar interação: {e}")
+        return None
 
 # Função para buscar a interação mais recente no banco de dados
-   
-def buscar_ultima_interacao(user_id):
+def buscar_ultima_interacao():
     try:
-        return Interacao.select().where(Interacao.user_id == user_id).order_by(Interacao.data_interacao.desc()).get()
+        return Interacao.select().order_by(Interacao.data_interacao.desc()).get()
     except Interacao.DoesNotExist:
-        return None
+        # Insere uma interação falsa no primeiro uso
+        interacao = registrar_interacao(0)
+        return interacao
     
 # Função para gerar a tabela de interações
 def gerar_tabela_interacoes():
@@ -75,7 +79,7 @@ PALAVRA_GATILHO_DELETAR = ["deletar"]
 
 total_gatilhos = lista_comandos + lista_comandos_n
 
-contador = 0
+next_prize = 15
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -90,16 +94,8 @@ async def on_message(message):
     if message.author == client.user or message.author.bot:
         return 
 
-    replied = False 
-    awarded = False  
-
-    global contador
-    target = random.randint(200, 250)
-    if contador >= target:
-        print("ganhou!!!!")
-        awarded = True
-
-    print(f"Contador: {contador} | Target: {target}")
+    replied = False
+    awarded = False
     
     sticker_d = [1189750838722301952, 1213028820320522280]
     sticker_n = [1187411015642648737, 1187415785761669120, 1189751078292553748, 1189751207661682758, 1212889809283194900]
@@ -115,99 +111,88 @@ async def on_message(message):
     # Vito
     if message.author.id == 564292989984440350:
         random_ian = random.choice(stickers_ian)
-        random_sticker = await message.guild.fetch_sticker(random_ian)
+        random_sticker = await message.guild.fetch_sticker(random_ian)    
 
+    if message.channel.id == 1080161118384820358 or message.channel.id == 1094939925721403443:
+        # Pega a última interação guardada no banco de dados
+        ultima_interacao = buscar_ultima_interacao() 
+        global next_prize
 
-    # Verifica se há um prêmio para enviar
-    ultima_interacao = buscar_ultima_interacao(message.author.id) 
-
-    if message.channel.id == 1080161118384820358:
-     for cmd in lista_comandos:
+        for cmd in lista_comandos:
             if unidecode(cmd.lower().replace(" ", "")) in unidecode(message.content.lower().replace(" ", "")):
                 replied = True
-                if awarded and portuguese_role in message.author.roles and zcash_role not in message.author.roles and message.author.id != dev_id:
-                 if ultima_interacao:
-                        diferenca = datetime.now() - ultima_interacao.data_interacao
-                        if diferenca.days >= 15:
+                # Se as seguintes condições forem satisfeitas, verificar a possibilidade de enviar um prêmio
+                if portuguese_role in message.author.roles and zcash_role not in message.author.roles and message.author.id != dev_id:
+                    if ultima_interacao:
+                        diferenca = datetime.now() - ultima_interacao.data_interacao                                                
+                        if diferenca.days >= next_prize:
                             if ultima_interacao.user_id != message.author.id:
+                                registrar_interacao(message.author.id)
                                 await message.reply(content="Parabéns, você ganhou um prêmio!", file=discord.File('./imagem/Golden_Ticket.png'))                
-                                contador = 0                
-                                return
+                                awarded = True
+                                next_prize = random.randint(15, 20)
                             else:
                                 print("Usuário já ganhou o prêmio recentemente. Nenhum prêmio enviado.")
                         else:
-                            print("Menos de 15 dias desde o último prêmio. Nenhum prêmio enviado.")    
-                 else:  
-                    await message.reply(content="Parabéns, você ganhou um prêmio!", file=discord.File('./imagem/Golden_Ticket.png'))                
-                    registrar_interacao(message.author.id)
-                    contador = 0                
-                    return 
-            else:
-                contador += 1     
+                            print(f"Menos de {next_prize} dias desde o último prêmio. Nenhum prêmio enviado.")    
+               
+                # Caso contrário, enviar uma mensagem normal de bom dia                
+                if not awarded:
+                    while random_sticker.id in sticker_n:
+                        random_sticker = random.choice(sticker_list) 
 
-            while random_sticker.id in sticker_n:
-                  random_sticker = random.choice(sticker_list) 
+                    try:
+                        await message.add_reaction('<:SunIcon:1189330981866451035>') 
+                        resposta = random.choice(lista_respostas)
+                        await message.reply(content=resposta, stickers=[random_sticker])
+                    except Exception as e:
+                        print('Erro ao tentar adicionar reação:', e)                
+                        break          
 
-            try:
-                    await message.add_reaction('<:SunIcon:1189330981866451035>') 
-                    resposta = random.choice(lista_respostas)
-                    await message.reply(content=resposta, stickers=[random_sticker])
-            except Exception as e:
-                    print('Erro ao tentar adicionar reação:', e)
-                
-                    break
-
-     for cmdn in lista_comandos_n:
+        for cmdn in lista_comandos_n:
             if replied:
                 break 
 
             if unidecode(cmdn.lower().replace(" ", "")) in unidecode(message.content.lower().replace(" ", "")):
-                if awarded and portuguese_role in message.author.roles and zcash_role not in message.author.roles and message.author.id != dev_id: 
-                     if ultima_interacao:
+                # Se as seguintes condições forem satisfeitas, verificar a possibilidade de enviar um prêmio
+                if portuguese_role in message.author.roles and zcash_role not in message.author.roles and message.author.id != dev_id:
+                    if ultima_interacao:
                         diferenca = datetime.now() - ultima_interacao.data_interacao
-                        if diferenca.days >= 15:
+                        if diferenca.days >= next_prize:
                             if ultima_interacao.user_id != message.author.id:
-                                await message.reply(content="Parabéns, você ganhou um prêmio!", file=discord.File('./imagem/Golden_Ticket.png'))
                                 registrar_interacao(message.author.id)
-                                contador = 0                
-                                return                
+                                await message.reply(content="Parabéns, você ganhou um prêmio!", file=discord.File('./imagem/Golden_Ticket.png'))                
+                                awarded = True                                
+                                next_prize = random.randint(15, 20)
                             else:
                                 print("Usuário já ganhou o prêmio recentemente. Nenhum prêmio enviado.")
                         else:
-                            print("Menos de 15 dias desde o último prêmio. Nenhum prêmio enviado.")
-                     else:  
-                        await message.reply(content="Parabéns, você ganhou um prêmio!", file=discord.File('./imagem/Golden_Ticket.png'))                
-                        registrar_interacao(message.author.id)
-                        contador = 0                
-                        return  
-            else:
-                contador += 1   
+                            print(f"Menos de {next_prize} dias desde o último prêmio. Nenhum prêmio enviado.")    
                 
-                while random_sticker.id in sticker_d:
-                    random_sticker = random.choice(sticker_list)            
-               
-                try:
-                    await message.add_reaction('<:MoonIcon:1189330979156930702>') 
-                    resposta = random.choice(lista_respostas_n)
-                    await message.reply(content=resposta, stickers=[random_sticker])
-                except Exception as e:
-                    print('Erro ao tentar adicionar reação:', e)
-            
-                    break
+                # Caso contrário, enviar uma mensagem normal de boa noite
+                if not awarded:  
+                    while random_sticker.id in sticker_d:
+                        random_sticker = random.choice(sticker_list) 
 
-     if "zm" in unidecode(message.content).replace(" ", "").lower():
+                    try:
+                        await message.add_reaction('<:MoonIcon:1189330979156930702>') 
+                        resposta = random.choice(lista_respostas)
+                        await message.reply(content=resposta, stickers=[random_sticker])
+                    except Exception as e:
+                        print('Erro ao tentar adicionar reação:', e)                
+                        break 
+
+        if "zm" in unidecode(message.content).replace(" ", "").lower():
             try:
                 await message.add_reaction('<:Coffee01:1189301205021769758>') 
             except Exception as e:
                 print('Erro ao tentar adicionar reação:', e)    
-     elif "zn" in unidecode(message.content).replace(" ", "").lower():
+        elif "zn" in unidecode(message.content).replace(" ", "").lower():
             try:
                 await message.add_reaction('<:Tea01:1189331115106902027>') 
             except Exception as e:
                 print('Erro ao tentar adicionar reação:', e)          
-
-
-            
+ 
     # Gerar e enviar tabela de interações
     for palavra in PALAVRA_GATILHO_TABELA:
         if palavra in message.content.lower() and message.channel.id == 1094939925721403443:
@@ -225,6 +210,5 @@ async def on_message(message):
                 deletar_todas_interacoes()
                 await message.channel.send("Todas as interações foram deletadas.")
                 break
-
 
 client.run(my_token)
