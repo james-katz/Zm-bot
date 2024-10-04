@@ -37,11 +37,6 @@ def registrar_interacao(user_id):
         print(f"Erro ao registrar interação: {e}")
 
 # Função para buscar a interação mais recente no banco de dados
-def buscar_ultima_interacao():
-    try:
-        return Interacao.select().order_by(Interacao.data_interacao.desc()).get()
-    except Interacao.DoesNotExist:
-        return None
 
 def buscar_ultima_interacao(user_id):
     try:
@@ -138,7 +133,7 @@ async def on_message(message):
       random_sticker = await message.guild.fetch_sticker(random_ian)
 
     # Verifica se há um prêmio para enviar
-    ultima_interacao = buscar_ultima_interacao(message.author.id)    
+    ultima_interacao = buscar_ultima_interacao()    
 
     if message.channel.id == 1080161118384820358:
      for cmd in lista_comandos:
