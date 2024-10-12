@@ -132,9 +132,7 @@ async def on_message(message):
                                 awarded = True
                                 next_prize = random.randint(15, 20)
                             else:
-                                print("Usuário já ganhou o prêmio recentemente. Nenhum prêmio enviado.")
-                        else:
-                            print(f"Menos de {next_prize} dias desde o último prêmio. Nenhum prêmio enviado.")    
+                                print("Usuário já ganhou o prêmio recentemente. Nenhum prêmio enviado.")   
                
                 # Caso contrário, enviar uma mensagem normal de bom dia                
                 if not awarded:
@@ -165,9 +163,7 @@ async def on_message(message):
                                 awarded = True                                
                                 next_prize = random.randint(15, 20)
                             else:
-                                print("Usuário já ganhou o prêmio recentemente. Nenhum prêmio enviado.")
-                        else:
-                            print(f"Menos de {next_prize} dias desde o último prêmio. Nenhum prêmio enviado.")    
+                                print("Usuário já ganhou o prêmio recentemente. Nenhum prêmio enviado.")    
                 
                 # Caso contrário, enviar uma mensagem normal de boa noite
                 if not awarded:  
@@ -176,7 +172,7 @@ async def on_message(message):
 
                     try:
                         await message.add_reaction('<:MoonIcon:1189330979156930702>') 
-                        resposta = random.choice(lista_respostas)
+                        resposta = random.choice(lista_respostas_n)
                         await message.reply(content=resposta, stickers=[random_sticker])
                     except Exception as e:
                         print('Erro ao tentar adicionar reação:', e)                
