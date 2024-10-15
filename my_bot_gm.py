@@ -122,7 +122,7 @@ async def on_message(message):
             if unidecode(cmd.lower().replace(" ", "")) in unidecode(message.content.lower().replace(" ", "")):
                 replied = True
                 # Se as seguintes condições forem satisfeitas, verificar a possibilidade de enviar um prêmio
-                if portuguese_role in message.author.roles and zcash_role not in message.author.roles and message.author.id != dev_id:
+                if portuguese_role in message.author.roles and zcash_role not in   message.author.roles and message.author.id != dev_id:
                     if ultima_interacao:
                         diferenca = datetime.now() - ultima_interacao.data_interacao                                                
                         if diferenca.days >= next_prize:
@@ -145,7 +145,7 @@ async def on_message(message):
                         await message.reply(content=resposta, stickers=[random_sticker])
                     except Exception as e:
                         print('Erro ao tentar adicionar reação:', e)                
-                        break          
+                break          
 
         for cmdn in lista_comandos_n:
             if replied:
@@ -176,7 +176,7 @@ async def on_message(message):
                         await message.reply(content=resposta, stickers=[random_sticker])
                     except Exception as e:
                         print('Erro ao tentar adicionar reação:', e)                
-                        break 
+                break 
 
         if "zm" in unidecode(message.content).replace(" ", "").lower():
             try:
