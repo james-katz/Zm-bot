@@ -173,7 +173,7 @@ def get_golden_ticket_rank():
 lista_comandos = ["zm","gm","Good morning","Morning","Gmorning","bom dia", "dia bom","dia","Buenos días","Feliz día","Buen día","Annyeonghaseyo","안녕하세요","Joh eun achim","좋은 아침","Annyeong hasimnikka","안녕하십니까","Buongiorno","Buon mattino","Buona giornata"]
 lista_comandos_n = ["zn","gn","Good night","Nighty night","Boa noite","Boa noitinha","noite","Buenas noches","annyeonghi jumuseyo","안녕히 주무세요","gutbam","굿밤","Buona notte"]
 lista_respostas = ["Zm Zcasher","Zm zfriend","Zm Zeep", "Zm Zepe","gm Zfriend", "gm Zcasher", "gm Zeep", "gm Zepe"]
-lista_respostas_n = ["Zn Zcasher","Zn zfriend","Zn Zeep", "Zn Zepe","gn Zfriend", "gn Zcasher" "gn Zeep", "gn Zepe"]
+lista_respostas_n = ["Zn Zcasher","Zn zfriend","Zn Zeep", "Zn Zepe","gn Zfriend", "gn Zcasher", "gn Zeep", "gn Zepe"]
 
 PALAVRA_GATILHO_TABELA = ["tabela"]
 PALAVRA_GATILHO_DELETAR = ["deletar"]
