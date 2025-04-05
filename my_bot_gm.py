@@ -115,14 +115,20 @@ def selecionar_ganhador():
     return int(selected_user)
 
 def get_top_users(limit=10):
+    earliest_interaction = fn.MIN(Interacao.id).alias('first_interaction_id')
+
     top_users = (
         User.select(
             User.id,
-            fn.COUNT(Interacao.id).alias('interaction_count')
+            fn.COUNT(Interacao.id).alias('interaction_count'),
+            earliest_interaction
         )
         .join(Interacao, on=(User.id == Interacao.user_id))
         .group_by(User.id)
-        .order_by(fn.COUNT(Interacao.id).desc())
+        .order_by(
+            fn.COUNT(Interacao.id).desc(),    # Most interactions first
+            earliest_interaction.asc()        # Then by earliest interaction (older ranks higher)
+        )
         .limit(limit)
     )
 
@@ -216,7 +222,7 @@ async def on_message(message):
         random_ian = random.choice(stickers_ian)
         random_sticker = await message.guild.fetch_sticker(random_ian)    
 
-    if message.channel.id == 1080161118384820358 or message.channel.id == 1094939925721403443:
+    if message.channel.id == 1080161118384820358 or message.channel.id == 1181352307061964840:
     # if message:
         # Pega a última premiação guardada no banco de dados
         ultima_premiacao = buscar_ultima_premiacao() 
