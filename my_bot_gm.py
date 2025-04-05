@@ -115,19 +115,19 @@ def selecionar_ganhador():
     return int(selected_user)
 
 def get_top_users(limit=10):
-    earliest_interaction = fn.MIN(Interacao.id).alias('first_interaction_id')
+    latest_interaction = fn.MAX(Interacao.id).alias('last_interaction_id')
 
     top_users = (
         User.select(
             User.id,
             fn.COUNT(Interacao.id).alias('interaction_count'),
-            earliest_interaction
+            latest_interaction
         )
         .join(Interacao, on=(User.id == Interacao.user_id))
         .group_by(User.id)
         .order_by(
             fn.COUNT(Interacao.id).desc(),    # Most interactions first
-            earliest_interaction.asc()        # Then by earliest interaction (older ranks higher)
+            latest_interaction.asc()        # Then by latest interaction (older ranks higher)
         )
         .limit(limit)
     )
